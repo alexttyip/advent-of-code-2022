@@ -6,6 +6,7 @@ use std::io::Write;
 use std::path::Path;
 
 use dotenv::dotenv;
+use reqwest::header::USER_AGENT;
 use reqwest::{blocking, header::COOKIE};
 
 use crate::solutions::{
@@ -59,6 +60,10 @@ fn scrape_input(day: usize) {
     let res = client
         .get(url)
         .header(COOKIE, format!("session={}", session))
+        .header(
+            USER_AGENT,
+            "github.com/alexttyip/advent-of-code-2022 by tsztoyip@gmail.com",
+        )
         .send()
         .expect("Error fetching input");
 
@@ -83,12 +88,15 @@ fn main() {
     dotenv().ok();
 
     let args: Vec<String> = env::args().collect();
-    let day = args.get(1)
+    let day = args
+        .get(1)
         .expect("Please provide a day number")
         .parse::<usize>()
         .expect("Argument is not a number");
 
-    let day_fn = DAY_FNS.get(day - 1).expect("Please pass a day number between 1 and 25");
+    let day_fn = DAY_FNS
+        .get(day - 1)
+        .expect("Please pass a day number between 1 and 25");
 
     scrape_input(day);
     day_fn();
