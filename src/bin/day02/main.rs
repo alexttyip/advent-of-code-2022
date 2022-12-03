@@ -16,7 +16,7 @@ fn parse_char(s: &str) -> Int {
 }
 
 fn read_input() -> InputType {
-    fs::read_to_string("./inputs/day02.txt")
+    fs::read_to_string("./src/bin/day02/input.txt")
         .unwrap()
         .lines()
         .map(|s| s.split_ascii_whitespace())
@@ -50,7 +50,7 @@ fn part2(input: InputType) -> Int {
     })
 }
 
-pub fn run() {
+pub fn main() {
     let input = read_input();
 
     let part1 = part1(input.clone());
