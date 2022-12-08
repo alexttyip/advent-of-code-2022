@@ -1,4 +1,4 @@
-use std::{collections::HashSet, fs};
+use std::fs;
 
 use itertools::Itertools;
 
@@ -17,13 +17,7 @@ fn find_unique_seq(input: &InputType, chunk_size: Int) -> Int {
         .chars()
         .collect_vec()
         .windows(chunk_size)
-        // Should've done this, feels nicer
-        // .position(|window| window.iter().collect::<HashSet<_>>().len() == chunk_size)
-        .position(|window| {
-            let mut unique = HashSet::with_capacity(chunk_size);
-
-            window.iter().all(move |x| unique.insert(x))
-        })
+        .position(|window| window.iter().all_unique())
         .unwrap()
         + chunk_size
 }

@@ -23,13 +23,12 @@ fn read_input() -> InputType {
         .collect()
 }
 
-fn contains(((a, b), (x, y)): &Ranges) -> bool {
-    (a <= x && b >= y) || (x <= a && y >= b)
+fn contains((x, y): &Ranges) -> bool {
+    (x.0 >= y.0 && x.1 <= y.1) || (y.0 >= x.0 && y.1 <= x.1)
 }
 
-fn overlaps(ranges: &Ranges) -> bool {
-    let ((a, b), (x, y)) = *ranges;
-    contains(ranges) || (a < x && b >= x) || (a <= y && b > y)
+fn overlaps((x, y): &Ranges) -> bool {
+    !(x.1 < y.0 || x.0 > y.1)
 }
 
 fn part1(input: InputType) -> Int {

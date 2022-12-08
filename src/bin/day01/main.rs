@@ -2,34 +2,31 @@ use std::fs;
 
 use itertools::Itertools;
 
-type InputType = Vec<u32>;
+type Int = u32;
+type InputType = Vec<Int>;
 
 fn read_input() -> InputType {
     fs::read_to_string("./src/bin/day01/input.txt")
         .unwrap()
         .trim()
         .split("\n\n")
-        .map(|elf| {
-            elf.lines()
-                .map(|cal| cal.parse::<u32>().expect("Ahh it's not an int"))
-                .sum()
-        })
+        .map(|elf| elf.lines().flat_map(|cal| cal.parse::<Int>()).sum::<Int>())
         .collect_vec()
 }
 
-fn part1(input: InputType) -> u32 {
+fn part1(input: &InputType) -> Int {
     *input.iter().max().expect("Surely there's a max")
 }
 
-fn part2(input: InputType) -> u32 {
-    input.iter().sorted().rev().take(3).sum()
+fn part2(input: &InputType) -> Int {
+    input.iter().sorted_unstable().rev().take(3).sum()
 }
 
 pub fn main() {
     let input = read_input();
 
-    let part1 = part1(input.clone());
-    let part2 = part2(input);
+    let part1 = part1(&input);
+    let part2 = part2(&input);
 
     println!("--- Day 01 ---");
     println!("Part 1: {}", part1);

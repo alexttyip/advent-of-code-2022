@@ -12,18 +12,8 @@ fn read_input() -> InputType {
         .lines()
         .map(|s| {
             s.chars()
-                .map(|c| -> Int {
-                    let c = c as Int;
-
-                    c - if (65..=90).contains(&c) {
-                        38
-                    } else if (97..=122).contains(&c) {
-                        96
-                    } else {
-                        panic!()
-                    }
-                })
-                .collect()
+                .map(|c| -> Int { c as Int - if c.is_uppercase() { 38 } else { 96 } })
+                .collect_vec()
         })
         .collect()
 }
