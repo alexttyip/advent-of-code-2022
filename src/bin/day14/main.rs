@@ -1,5 +1,5 @@
 use std::cmp::Ordering::{Greater, Less};
-use std::collections::HashSet;
+use std::collections::{HashSet, VecDeque};
 use std::fs;
 
 use itertools::Itertools;
@@ -38,10 +38,9 @@ fn simulate(mut occupied: InputType) -> (Int, Int) {
 
     let mut part1 = None;
     let mut sand_count = 0;
-    let mut x = 500;
-    let mut y = 0;
+    let mut history = VecDeque::<Point>::from([(500, 0)]);
 
-    loop {
+    while let Some(&(x, y)) = history.back() {
         if y >= floor - 1 {
             // Reached floor
             if part1.is_none() {
@@ -49,30 +48,22 @@ fn simulate(mut occupied: InputType) -> (Int, Int) {
             }
         } else if !occupied.contains(&(x, y + 1)) {
             // Straight down
-            y += 1;
+            history.push_back((x, y + 1));
             continue;
         } else if !occupied.contains(&(x - 1, y + 1)) {
             // Down left
-            x -= 1;
-            y += 1;
+            history.push_back((x - 1, y + 1));
             continue;
         } else if !occupied.contains(&(x + 1, y + 1)) {
             // Down right
-            x += 1;
-            y += 1;
+            history.push_back((x + 1, y + 1));
             continue;
         }
 
         // Settled
         sand_count += 1;
-
-        if x == 500 && y == 0 {
-            break;
-        }
-
         occupied.insert((x, y));
-        x = 500;
-        y = 0;
+        history.pop_back();
     }
 
     (part1.unwrap(), sand_count)
